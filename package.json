@@ -1,0 +1,26 @@
+{
+  "name": "debugger-logger",
+  "version": "1.1.3-alpha",
+  "description": "Basic logging of all console actions and module calls.",
+  "main": "Debugger.js",
+  "types": "index.d.ts",
+  "files": [
+    "Debugger.js",
+    "src/BrowserDebugger.js",
+    "src/MainError.js",
+    "src/index.d.ts",
+    "src/tsconfig.json"
+  ],
+  "keywords": ["Debugger", "Logger"],
+  "author": "Overlord_303",
+  "homepage": "https://www.npmjs.com/package/debugger-logger",
+  "repository": {
+    "url": "https://github.com/overlord-303/debugger/",
+    "directory": "root"
+  },
+  "bugs": {
+    "email": "overlordontwitch@gmail.com",
+    "url": "https://github.com/overlord-303/debugger/issues"
+  },
+  "license": "ISC"
+}
