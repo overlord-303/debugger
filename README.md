@@ -18,6 +18,8 @@
     - [Restoring Original Modules](#restoring-original-modules)
 - [License](#license)
 
+---
+
 ## Installation
 
 To use this package, clone the repository and install dependencies if required:
@@ -31,6 +33,7 @@ or install via npm:
 npm install debugger-logger@latest
 ```
 
+---
 ## Features
 
 ### Logging Capabilities
@@ -60,6 +63,8 @@ Provides a snapshot of environment details, such as platform, architecture, Node
 
 - Integrates global error handling for uncaught exceptions and unexpected errors.
 - Allows setting custom shutdown and cleanup actions during application exit.
+
+---
 
 ## Usage
 
@@ -130,6 +135,8 @@ will return an object with the following structure:
 }
 ```
 
+---
+
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the [**GNU AGPLv3**](https://www.gnu.org/licenses/agpl-3.0.en.html) License.
