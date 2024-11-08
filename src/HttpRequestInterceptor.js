@@ -1,4 +1,4 @@
-const Debugger = require('./../Debugger.js');
+const getDebugger = () => require('./../Debugger.js');
 const Util = require('./Util.js');
 const MainError = require('./MainError.js');
 
@@ -59,7 +59,7 @@ class HttpRequestInterceptor
                  * @typedef {Object} response.socket._httpMessage
                  */
 
-                Debugger.log(`${proto(response.socket._httpMessage.protocol)} Request:`, {
+                getDebugger().log(`${proto(response.socket._httpMessage.protocol)} Request:`, {
                     method,
                     host: response.socket._httpMessage.host,
                     path,
