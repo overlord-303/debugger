@@ -1,7 +1,7 @@
-// HttpRequestInterceptors.d.ts
+// HttpRequestInterceptor.d.ts
 // noinspection JSUnusedGlobalSymbols
 
-declare module 'debugger-logger/src/HttpRequestInterceptors'
+declare module 'debugger-logger/src/HttpRequestInterceptor'
 {
     import * as http from "node:http";
     import * as https from "node:https";
@@ -17,7 +17,7 @@ declare module 'debugger-logger/src/HttpRequestInterceptors'
     /**
      * Modifies Http & Https modules to intercept and log http requests globally.
      */
-    class HttpRequestInterceptors
+    class HttpRequestInterceptor
     {
         #ORIGINAL_MODULES : { [key: string]: ModuleBackup } = {};
 
@@ -31,7 +31,7 @@ declare module 'debugger-logger/src/HttpRequestInterceptors'
         #wrapHttpModule(_requestCallback: RequestCallbackType): void;
     }
 
-    const H: HttpRequestInterceptors;
+    const H: HttpRequestInterceptor;
 
     export = H;
 }

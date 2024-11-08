@@ -73,8 +73,6 @@ class Debugger
     {
         if (this.#throwError) throw new MainError('SingletonError', 'Instance already exists.').addData({ stack: this.#stack });
 
-        require('./src/HttpRequestInterceptors.js');
-
         this.#ORIGINAL_LOGS = {
             log: console.log,
             error: console.error,
@@ -100,6 +98,7 @@ class Debugger
         {
             Debugger.#instance = new Debugger();
             Debugger.#instance.log(Debugger.#instance.#UTIL.getClass() + '::instance_created > Logger started.');
+            setImmediate(() => require('./src/HttpRequestInterceptor.js'));
         }
 
         return Debugger.#instance;

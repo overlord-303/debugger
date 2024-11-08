@@ -1,4 +1,4 @@
-// HttpRequestInterceptors.d.ts
+// HttpRequestInterceptor.d.ts
 // noinspection JSUnusedGlobalSymbols
 
 declare module 'debugger-logger/src/Util'

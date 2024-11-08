@@ -2,7 +2,7 @@ const Debugger = require('./../Debugger.js');
 const Util = require('./Util.js');
 const MainError = require('./MainError.js');
 
-class HttpRequestInterceptors
+class HttpRequestInterceptor
 {
     #ORIGINAL_MODULES = {}
 
@@ -134,4 +134,4 @@ class HttpRequestInterceptors
     {}
 }
 
-module.exports = new HttpRequestInterceptors();
+module.exports = new HttpRequestInterceptor();

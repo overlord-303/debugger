@@ -4,7 +4,7 @@
 declare module 'debugger-logger'
 {
     import * as Module from "node:module";
-    import * as HRI from "debugger-logger/src/HttpRequestInterceptors";
+    import * as HRI from "debugger-logger/src/HttpRequestInterceptor";
     import * as Util from "debugger-logger/src/Util";
 
     enum EventTypes {
