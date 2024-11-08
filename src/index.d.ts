@@ -4,8 +4,8 @@
 declare module 'debugger-logger'
 {
     import * as Module from "node:module";
-    import * as HRI from "debugger-logger/src/HttpRequestInterceptor";
     import * as Util from "debugger-logger/src/Util";
+    import { HRI, ModuleBackupType } from "debugger-logger/src/HttpRequestInterceptor";
 
     enum EventTypes {
         'filelog',
@@ -79,6 +79,11 @@ declare module 'debugger-logger'
         constructor();
 
         /**
+         * Static {@link HRI} instance.
+         */
+        static #HRI: HRI;
+
+        /**
          * Global {@link Debugger} instance.
          */
         static #instance: Debugger;
@@ -106,6 +111,13 @@ declare module 'debugger-logger'
             env: EnvironmentInformation;
             executionTimePassed: string;
         };
+
+        /**
+         * Restore modules back to their original state.
+         *
+         * @see {@link ModuleBackupType}
+         */
+        restore(_moduleName: keyof typeof ModuleBackupType): void;
 
         /**
          * Add a listener to a chosen event.

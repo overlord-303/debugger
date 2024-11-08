@@ -12,6 +12,11 @@ declare module 'debugger-logger/src/HttpRequestInterceptor'
         get: http.get|https.get,
     }
 
+    enum ModuleBackupType {
+        'http',
+        'https',
+    }
+
     type RequestCallbackType = <R>(proto: string, overriddenRequest: (...args: any[]) => R, args: any[]) => R;
 
     /**
@@ -24,14 +29,14 @@ declare module 'debugger-logger/src/HttpRequestInterceptor'
         /**
          * Restore modules back to their original state.
          */
-        restore(_moduleName: string): void;
+        restore(_moduleName: keyof typeof ModuleBackupType): void;
 
         #wrapHttpRequest(): void;
         #requestCallback: RequestCallbackType;
         #wrapHttpModule(_requestCallback: RequestCallbackType): void;
     }
 
-    const H: HttpRequestInterceptor;
+    const HRI: HttpRequestInterceptor;
 
-    export = H;
+    export { HRI, ModuleBackupType };
 }

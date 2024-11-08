@@ -2,6 +2,8 @@
 
 **Debugger Logger** is a Node.js utility package for comprehensive logging and request interception. It provides in-depth debugging tools for Node.js applications, capturing HTTP/HTTPS requests, logging events, and managing application state through various utility methods.
 
+---
+
 ## Table of Contents
 - [Installation](#installation)
 - [Features](#features)
@@ -121,17 +123,17 @@ Debugger.restore('https');
 Debugger.getData();
 ```
 will return an object with the following structure:
-```typescript
+```javascript
 {
   env: {
-    name: string;
-    version: string;
-    platform: NodeJS.Platform; 
-    architecture: NodeJS.Architecture;
-    nodePath: string;
-    pid: number;
-  };
-  executionTimePassed: number;
+    name: string,
+    version: string,
+    platform: NodeJS.Platform, 
+    architecture: NodeJS.Architecture,
+    nodePath: string,
+    pid: number,
+  },
+  executionTimePassed: number,
 }
 ```
 

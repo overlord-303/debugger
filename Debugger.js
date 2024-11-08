@@ -91,6 +91,7 @@ class Debugger
         this.#setGlobalErrorHandler();
     }
 
+    static #HRI;
     static #instance;
     static getSingletonInstance()
     {
@@ -98,7 +99,8 @@ class Debugger
         {
             Debugger.#instance = new Debugger();
             Debugger.#instance.log(Debugger.#instance.#UTIL.getClass() + '::instance_created > Logger started.');
-            setImmediate(() => require('./src/HttpRequestInterceptor.js'));
+
+            Debugger.#HRI = require('debugger-logger/src/HttpRequestInterceptor');
         }
 
         return Debugger.#instance;
@@ -140,6 +142,11 @@ class Debugger
             },
             executionTimePassed: this.#UTIL.getExecutionTime(),
         };
+    }
+
+    restore(_moduleName)
+    {
+        Debugger.#HRI.restore(_moduleName);
     }
 
     on(_event, _listener)
