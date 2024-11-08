@@ -1,11 +1,17 @@
 const MainError = require('./src/MainError.js');
 
 const Module = require('module');
-const { writeFileSync, existsSync, mkdirSync } = require('fs');
 const path = require('path');
+const { writeFileSync, existsSync, mkdirSync } = require('fs');
 
 class Debugger
 {
+    EVENTS = {
+        FILELOG: 'filelog',
+        CONSOLELOG: 'consolelog',
+        MODULECALL: 'modulecall',
+    };
+
     #ORIGINAL_LOGS;
     #ORIGINAL_MODULE_FUNCTIONALITY;
 
@@ -65,7 +71,9 @@ class Debugger
      */
     constructor()
     {
-        if (this.#throwError) throw new MainError('SingletonError', 'Instance already exists.');
+        if (this.#throwError) throw new MainError('SingletonError', 'Instance already exists.').addData({ stack: this.#stack });
+
+        require('./src/HttpRequestInterceptors.js');
 
         this.#ORIGINAL_LOGS = {
             log: console.log,
@@ -337,7 +345,7 @@ class Debugger
             (hasKey || hasError) ? _data.slice(1).join(' ') :
             _data.join(' ');
 
-        this.#ORIGINAL_LOGS['log'](err ?? '');
+        //this.#ORIGINAL_LOGS['log'](err ?? '');
 
         this.#log
         (

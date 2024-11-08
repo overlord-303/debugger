@@ -21,11 +21,11 @@ class MainError extends Error
     /**
      * Adds data to the error object.
      *
-     * @param {Object} data
+     * @param {Object|*} data
      */
     addData(data)
     {
-        if (typeof data === 'string') data = { data };
+        if (typeof data !== 'object') data = { data };
 
         Object.assign(this.data, data);
 

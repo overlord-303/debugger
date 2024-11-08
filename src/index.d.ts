@@ -4,6 +4,8 @@
 declare module 'debugger-logger'
 {
     import * as Module from "node:module";
+    import * as HRI from "debugger-logger/src/HttpRequestInterceptors";
+    import * as Util from "debugger-logger/src/Util";
 
     enum EventTypes {
         'filelog',
@@ -34,6 +36,12 @@ declare module 'debugger-logger'
      */
     class Debugger
     {
+        EVENTS: { [key: string]: EventTypes } = {
+            FILELOG: EventTypes.filelog,
+            CONSOLELOG: EventTypes.consolelog,
+            MODULECALL: EventTypes.modulecall,
+        };
+
         #ORIGINAL_LOGS: { [key: string]: (...args: function[]) => void };
         #ORIGINAL_MODULE_FUNCTIONALITY: {
             load: Module._load,
@@ -102,18 +110,18 @@ declare module 'debugger-logger'
         /**
          * Add a listener to a chosen event.
          */
-        on<T extends keyof typeof EventTypes>(event: T, listener: EventCallback<T>): void;
+        on<T extends typeof EventTypes | keyof typeof EventTypes>(event: T, listener: EventCallback<T>): void;
 
         /**
          * Remove a listener for a chosen event.
          */
-        off<T extends keyof typeof EventTypes>(event: T, listener: EventCallback<T>): void;
+        off<T extends typeof EventTypes | keyof typeof EventTypes>(event: T, listener: EventCallback<T>): void;
 
         /**
          * Emit an event with it's required parameters.
          * @emits {@link EventTypes}
          */
-        #emit<T extends keyof typeof EventTypes>(event: T, ...args: EventArgs[T]): void;
+        #emit<T extends typeof EventTypes | keyof typeof EventTypes>(event: T, ...args: EventArgs[T]): void;
 
         /**
          * Get the {@link EnvironmentInformation} formatted as a string for logging purposes.
