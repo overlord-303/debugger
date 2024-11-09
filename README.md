@@ -90,15 +90,14 @@ Debugger.logError('Error message');
 
 ### Event Listeners
 
-Add event listeners to track specific events:
+Add or remove event listeners to track specific events:
 ```javascript
-Debugger.on('filelog', (filePath, message) => {
-    console.log(`Logged to file: ${filePath} with message: ${message}`);
-});
+function log(filePath, content) {
+  console.log(`Logged to file: ${filePath}, with message: ${content}.`);
+}
 
-Debugger.on('consolelog', (functionName, message) => {
-    console.log(`Console function ${functionName} called with message: ${message}`);
-});
+Debugger.on('filelog', log);
+Debugger.off(Debugger.EVENTS.FILELOG, log);
 ```
 
 ### Intercepting HTTP Requests
@@ -128,12 +127,39 @@ will return an object with the following structure:
   env: {
     name: string,
     version: string,
-    platform: NodeJS.Platform, 
+    platform: NodeJS.Platform,
     architecture: NodeJS.Architecture,
     nodePath: string,
-    pid: number,
+    pid: number
   },
-  executionTimePassed: number,
+  memoryUsage: {
+    rss: {
+      bytes: number,
+      kilobytes: number,
+      megabytes: number
+    },
+    heapTotal: {
+      bytes: number,
+      kilobytes: number,
+      megabytes: number
+    },
+    heapUsed: {
+      bytes: number,
+      kilobytes: number,
+      megabytes: number
+    },
+    external: {
+      bytes: number,
+      kilobytes: number,
+      megabytes: number
+    },
+    arrayBuffers: {
+      bytes: number,
+      kilobytes: number,
+      megabytes: number
+    }
+  },
+  executionTimePassed: number
 }
 ```
 

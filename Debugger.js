@@ -126,9 +126,6 @@ class Debugger
             : void 0;
     }
 
-    /**
-     * @return {{ env: { name: string, version: string, platform: NodeJS.Platform, architecture: NodeJS. Architecture, nodePath: string, pid: number }, executionTimePassed: string }}
-     */
     getData()
     {
         return {
@@ -140,6 +137,7 @@ class Debugger
                 nodePath: process.execPath,
                 pid: process.pid,
             },
+            memoryUsage: this.#formatMemoryUsage(process.memoryUsage()),
             executionTimePassed: this.#UTIL.getExecutionTime(),
         };
     }
@@ -299,6 +297,23 @@ class Debugger
     #isOriginalFunction(_name)
     {
         return typeof this.#ORIGINAL_LOGS[_name] === 'function';
+    }
+
+    #formatMemoryUsage(_memoryUsage)
+    {
+        const convertedUsage = {};
+
+        for (const key in _memoryUsage)
+        {
+            const bytes = _memoryUsage[key];
+            convertedUsage[key] = {
+                bytes: bytes,
+                kilobytes: Number((bytes / 1024).toFixed(2)),         // KB
+                megabytes: Number((bytes / (1024 * 1024)).toFixed(2)) // MB
+            };
+        }
+
+        return convertedUsage;
     }
 
     /**

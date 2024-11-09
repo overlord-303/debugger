@@ -22,6 +22,14 @@ declare module 'debugger-logger'
         pid: number
     }
 
+    type MemorySnapshotEntry = {
+        bytes: number,
+        kilobytes: number,
+        megabytes: number
+    }
+
+    type MemorySnapshot = { [key in keyof NodeJS.MemoryUsage]: MemorySnapshotEntry };
+
     type EventArgs = {
         filelog: [string, string],
         consolelog: [string, string],
@@ -109,6 +117,7 @@ declare module 'debugger-logger'
          */
         getData(): {
             env: EnvironmentInformation;
+            memoryUsage: MemorySnapshot;
             executionTimePassed: string;
         };
 
@@ -182,6 +191,11 @@ declare module 'debugger-logger'
          * Checks whether a string is connected to an original console function.
          */
         #isOriginalFunction(_name: string): boolean;
+
+        /**
+         * Formats and returns the Object provided by {@link NodeJS.MemoryUsage 'process.memoryUsage()'}.
+         */
+        #formatMemoryUsage(_memoryUsage: NodeJS.MemoryUsage): MemorySnapshot;
 
         /**
          * Log data (*info*) to the current *.log*-file.
