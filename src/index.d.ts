@@ -44,11 +44,7 @@ declare module 'debugger-logger'
      */
     class Debugger
     {
-        EVENTS: { [key: string]: EventTypes } = {
-            FILELOG: EventTypes.filelog,
-            CONSOLELOG: EventTypes.consolelog,
-            MODULECALL: EventTypes.modulecall,
-        };
+        EVENTS: { [key in keyof typeof EventTypes as Uppercase<key & string>]: EventTypes[key] } = {};
 
         #ORIGINAL_LOGS: { [key: string]: (...args: function[]) => void };
         #ORIGINAL_MODULE_FUNCTIONALITY: {
@@ -201,13 +197,13 @@ declare module 'debugger-logger'
          * Log data (*info*) to the current *.log*-file.
          * @emits {@link EventTypes}
          */
-        log(..._data: string[]): void;
+        log(..._data: any[]): void;
 
         /**
          * Log data (*debug*) to the current *.log*-file.
          * @emits {@link EventTypes}
          */
-        logDebug(..._data: string[]): void;
+        logDebug(..._data: any[]): void;
 
         /**
          * Log data (*error*) to the current *.log*-file.

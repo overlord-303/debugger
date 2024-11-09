@@ -106,23 +106,17 @@ class Debugger
         return Debugger.#instance;
     }
 
-    /**
-     * @param {boolean} debug
-     */
-    setDebug(debug)
+    setDebug(_debug)
     {
-        typeof debug === 'boolean'
-            ? this.#debug = debug
-            : debug;
+        typeof _debug === 'boolean'
+            ? this.#debug = _debug
+            : _debug;
     }
 
-    /**
-     * @param {string} dirPath
-     */
-    setLogDirectoryPath(dirPath)
+    setLogDirectoryPath(_dirPath)
     {
-        typeof dirPath === 'string'
-            ? this.#LOG_DIRECTORY = path.normalize(dirPath)
+        typeof _dirPath === 'string'
+            ? this.#LOG_DIRECTORY = path.normalize(_dirPath)
             : void 0;
     }
 
@@ -316,9 +310,6 @@ class Debugger
         return convertedUsage;
     }
 
-    /**
-     * @param {...string} _data
-     */
     log(..._data)
     {
         const hasKey = this.#UTIL.hasKey(_data);
@@ -332,9 +323,6 @@ class Debugger
         );
     }
 
-    /**
-     * @param {...string} _data
-     */
     logDebug(..._data)
     {
         const hasKey = this.#UTIL.hasKey(_data);
@@ -348,9 +336,6 @@ class Debugger
         );
     }
 
-    /**
-     * @param {...string|Error} _data
-     */
     logError(..._data)
     {
         let err;
@@ -376,11 +361,6 @@ class Debugger
         );
     }
 
-    /**
-     * @param {string} _type
-     * @param {string} _data
-     * @param {false|string} _calledByConsoleFunctions
-     */
     #log(_type, _data, _calledByConsoleFunctions)
     {
         if (this.#isEventTriggeredLog && _calledByConsoleFunctions && this.#isOriginalFunction(_calledByConsoleFunctions))
