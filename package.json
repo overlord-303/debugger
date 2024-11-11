@@ -1,13 +1,14 @@
 {
   "name": "debugger-logger",
-  "version": "1.1.11-alpha",
+  "version": "1.2.0-alpha",
   "description": "Basic logging of all console actions and module calls and http(s) requests.",
   "main": "Debugger.js",
   "types": "index.d.ts",
   "files": [
     "Debugger.js",
     "src/*",
-    "src/ts/*"
+    "src/ts/*",
+    "src/misc/*"
   ],
   "keywords": ["Debugger", "Logger"],
   "author": "Overlord_303",

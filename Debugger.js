@@ -71,7 +71,7 @@ class Debugger
      */
     constructor()
     {
-        if (this.#throwError) throw new MainError('SingletonError', 'Instance already exists.').addData({ stack: this.#stack });
+        if (this.#throwError) throw MainError.fromErrorCode('DLE5001').addData({ stack: this.#stack });
 
         this.#ORIGINAL_LOGS = {
             log: console.log,

@@ -1,6 +1,10 @@
-const getDebugger = () => require('./../Debugger.js');
 const Util = require('./Util.js');
 const MainError = require('./MainError.js');
+
+/**
+ * @return {import('./../Debugger')}
+ */
+const getDebugger = () => require('./../Debugger.js');
 
 class HttpRequestInterceptor
 {
@@ -85,7 +89,7 @@ class HttpRequestInterceptor
                     request: overriddenRequest,
                     get: overriddenGet,
                 }) === true
-            ) throw new MainError('ModuleOverwriteError', `Module's request already overridden for ${moduleName} protocol.`);
+            ) throw MainError.fromErrorCode('DLE5003').addData({ module: moduleName });
 
             module.request = function (input, options, callback) {
                 const req = _requestCallback(proto, overriddenRequest.bind(module), [
@@ -112,7 +116,7 @@ class HttpRequestInterceptor
     {
         const { options, callback } = Util.normalizeClientRequestArgs(..._args);
 
-        if (Object.keys(options).length === 0) throw MainError('EmptyOptionsObjectError', 'Making a request with empty `options` is not supported.').addData(_args);
+        if (Object.keys(options).length === 0) throw MainError.fromErrorCode('DLE5002').addData(_args);
 
         options.proto = _proto;
 
