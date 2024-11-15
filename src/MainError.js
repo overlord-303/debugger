@@ -12,11 +12,6 @@ class MainError extends Error
 
     #data = {};
 
-    /**
-     * @param {string} name
-     * @param {string} message
-
-     */
     constructor(name, message)
     {
         super(message);
@@ -36,11 +31,6 @@ class MainError extends Error
         };
     }
 
-    /**
-     * Adds data to the error object.
-     *
-     * @param {Object|*} data
-     */
     addData(data)
     {
         if (typeof data !== 'object') data = { data };
@@ -50,38 +40,20 @@ class MainError extends Error
         return this;
     }
 
-    /**
-     * Returns the current error objects data property.
-     * @return {Object}
-     */
     getData()
     {
         return this.#data;
     }
 
-    /**
-     * Converts the error to a JSON string, useful for logging.
-     * @return {string}
-     */
     toJSON()
     {
         return JSON.stringify(this.#data, null, 2);
     }
 
-    /**
-     * Formats the error into a readable string, helpful for console output.
-     * @return {string}
-     */
     toString() {
         return `Error: ${this.#name}\nMessage: ${this.#message}\nTime: ${this.#timestamp}\nStack: ${this.#stacktrace}`;
     }
 
-    /**
-     * Static factory method to create an error instance from JSON data.
-     * @param {string} _json
-     * @param {boolean} _throw
-     * @return {MainError}
-     */
     static fromJSON(_json, _throw = false)
     {
         const data = JSON.parse(_json);
@@ -91,6 +63,7 @@ class MainError extends Error
         Object.keys(data).forEach(key =>
         {
             if (!filter(key)) error.addData({ [key]: data[key] });
+            else error.addData({ [`${key}-original`]: data[key] });
         });
 
         if (_throw) throw error;

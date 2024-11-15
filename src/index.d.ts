@@ -5,6 +5,7 @@ declare module 'debugger-logger'
 {
     import * as Module from "node:module";
     import * as Util from "debugger-logger/src/Util";
+    import * as MainError from "debugger-logger/src/MainError";
     import { HRI, ModuleBackupType } from "debugger-logger/src/HttpRequestInterceptor";
 
     enum EventTypes {
@@ -78,6 +79,7 @@ declare module 'debugger-logger'
         #EVENTS: { [key in keyof typeof EventTypes]?: EventCallback<keyof EventArgs>[]} = {}
 
         /**
+         * @throws MainError
          * @see getSingletonInstance
          */
         constructor();
