@@ -67,6 +67,8 @@ declare module 'debugger-logger/src/MainError'
          */
         static fromErrorCode(_errorCode: string, _throw?: boolean): MainError;
 
+        static getStacktraceFormatter(): function;
+
         /**
          * Parses the stack trace into an array of objects for structured handling.
          * Each entry contains the function name, file, and line/column numbers.

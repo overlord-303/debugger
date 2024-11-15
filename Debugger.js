@@ -63,6 +63,7 @@ class Debugger
         getClass: () => this.constructor.name,
         isNode: () => typeof global !== 'undefined' && global.process != null && global.process.versions != null && global.process.versions.node != null,
         hasKey: (data) => data.length > 0 ? this.#ORIGINAL_LOGS.hasOwnProperty(data[0]) : false,
+        stacktrace: MainError.getStacktraceFormatter(),
     }
     #EVENTS = {};
 
@@ -257,7 +258,11 @@ class Debugger
     {
         return _data.map((item) =>
         {
-            if (typeof item === "object" && item !== null)
+            if (item instanceof Error)
+            {
+                return `${item.name}, Message: '${item.message}', Stack:\n${this.#UTIL.stacktrace(item.stack)}`;
+            }
+            else if (typeof item === "object" && item !== null)
             {
                 try
                 {
@@ -340,18 +345,20 @@ class Debugger
     {
         let err;
         const hasKey = this.#UTIL.hasKey(_data);
-        const hasError = (() => {
-            if (!hasKey && _data[0] instanceof Error) { err = _data[0]; return true; }
-            else if (_data[1] instanceof Error) { err = _data[1]; return true; }
-            return false;
-        })();
 
-        const slicedData =
-            (hasKey && hasError) ? _data.slice(2).join(' ') :
-            (hasKey || hasError) ? _data.slice(1).join(' ') :
-            _data.join(' ');
+        for (let item of _data)
+        {
+            if (item instanceof Error)
+            {
+                err = item;
+                break;
+            }
+        }
 
-        //this.#ORIGINAL_LOGS['log'](err ?? '');
+        const formattedData = this.#format(..._data);
+        const slicedData = formattedData
+            .filter(item => item !== err && (!hasKey || item !== _data[0]))
+            .join(' ') || (err ? err.message : '');
 
         this.#log
         (

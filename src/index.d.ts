@@ -75,6 +75,7 @@ declare module 'debugger-logger'
             getClass: () => string;
             isNode: () => boolean;
             hasKey: (data: any[]) => boolean;
+            stacktrace: (stacktrace: string, maxEntries?: number) => string[];
         };
         #EVENTS: { [key in keyof typeof EventTypes]?: EventCallback<keyof EventArgs>[]} = {}
 

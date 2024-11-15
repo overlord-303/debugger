@@ -1,4 +1,5 @@
 const errors = require('./misc/errors.js');
+const { getFormattedStackTrace } = require('./misc/stacktrace.js');
 
 /**
  * @inheritDoc
@@ -79,6 +80,11 @@ class MainError extends Error
 
         if (_throw) throw error;
         return error;
+    }
+
+    static getStacktraceFormatter()
+    {
+        return getFormattedStackTrace;
     }
 
     /**

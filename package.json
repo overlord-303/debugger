@@ -1,6 +1,6 @@
 {
   "name": "debugger-logger",
-  "version": "1.2.1-alpha",
+  "version": "1.2.2-alpha",
   "description": "Basic logging of all console actions and module calls and http(s) requests.",
   "main": "Debugger.js",
   "types": "index.d.ts",
