@@ -7,8 +7,9 @@ class ToJSON
         Object.assign(this, preparedData);
     }
 
-    #_prepareForLogging(item, fn, seen = new WeakSet()) {
-        const prepareForLogging = fn;  // This will now refer to the correct function
+    #_prepareForLogging(item, fn, seen = new WeakSet())
+    {
+        const prepareForLogging = fn;
 
         if (item === null || typeof item !== "object") return item;
 
@@ -25,18 +26,12 @@ class ToJSON
 
         const processedObject = {};
 
-        for (const key of Object.keys(item)) {
+        for (const key of Object.keys(item))
+        {
             const value = item[key];
 
-            if (typeof value === "function") {
-                processedObject[key] = value.toString();
-            }
-            else if (typeof value === "bigint") {
-                processedObject[key] = value.toString();
-            }
-            else {
-                processedObject[key] = prepareForLogging(value, prepareForLogging, seen);
-            }
+            if (typeof value === "function" || typeof value === "bigint") processedObject[key] = value.toString();
+            else processedObject[key] = prepareForLogging(value, prepareForLogging, seen);
         }
 
         return processedObject;

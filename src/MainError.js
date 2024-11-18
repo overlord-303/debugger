@@ -16,10 +16,12 @@ class MainError extends Error
 
     constructor(name, message)
     {
-        super(message);
+        super(typeof message === 'function' ? message() : message);
+        super.name = name;
+
         const msg = this.#_createMessageProxy(message);
         const timestamp = new Date();
-        const stack = this.#getFormattedStackTrace(this.stack);
+        const stack = getFormattedStackTrace(this.stack);
 
         this.#name = name;
         this.#message = msg;
@@ -54,7 +56,7 @@ class MainError extends Error
     }
 
     toString() {
-        return `Error: ${this.#name}\nMessage: ${this.#message()}\nTime: ${this.#timestamp}\nStack: ${this.#stacktrace}`;
+        return `Error: ${this.#name}, Message: ${this.#message()}, Time: ${this.#timestamp}, Stack:\n${this.#stacktrace}`;
     }
 
     static fromJSON(_json, _throw = false)
@@ -89,50 +91,6 @@ class MainError extends Error
         return getFormattedStackTrace;
     }
 
-    #getParsedStackTrace(_stacktrace)
-    {
-        return _stacktrace
-            .split('\n')
-            .slice(1)
-            .map(line =>
-            {
-                const match = line.match(/\s*at\s+(.*?)\s+\((.*?):(\d+):(\d+)\)/) || line.match(/\s*at\s+(.*?):(\d+):(\d+)/); // fallback no function
-                if (match)
-                {
-                    const [_, func, file, line, column] = match;
-                    return {
-                        function: func || '<anonymous>',
-                        file,
-                        line: parseInt(line, 10),
-                        column: parseInt(column, 10)
-                    };
-                }
-                return { raw: line.trim() };
-            });
-    }
-
-    /**
-     * Formats the stack trace into a readable string format.
-     * @param {string} _stacktrace
-     * @param {number} _maxEntries Maximum stack entries to display.
-     * @return {string}
-     */
-    #getFormattedStackTrace(_stacktrace, _maxEntries = 15)
-    {
-        return this.#getParsedStackTrace(_stacktrace).slice(0, _maxEntries).map(entry =>
-        {
-            if (entry.raw) return `at ${entry.raw}`;
-            else return `at ${entry.function} (${entry.file}:${entry.line}:${entry.column})`;
-        }).join('\n');
-    }
-
-    /**
-     * Creates a proxy for the message property, allowing it to be accessed as a
-     * function with parameters only when called, or as a default value otherwise.
-     *
-     * @param {Function|string} message - The message function or string from ErrorCodes
-     * @return {Function} - Proxy function that acts as both callable and readable property
-     */
     #_createMessageProxy(message)
     {
         const messageFn = typeof message === 'function' ? message : () => message;

@@ -4,7 +4,7 @@ declare module 'debugger-logger/src/MainError'
 {
     type Data = {
         name: string,
-        message: Proxy<Function|string>|string,
+        message: Function|string,
         timestamp: Date,
         stack: string,
         code?: string,
@@ -70,27 +70,11 @@ declare module 'debugger-logger/src/MainError'
         static getStacktraceFormatter(): function;
 
         /**
-         * Parses the stack trace into an array of objects for structured handling.
-         * Each entry contains the function name, file, and line/column numbers.
-         * @param _stacktrace - The raw stack trace string.
-         * @returns An array of objects, each representing a stack frame with function, file, line, and column details.
-         */
-        #getParsedStackTrace(_stacktrace: string): Array<{ function: string; file: string; line: number; column: number; } | { raw: string; }>;
-
-        /**
-         * Formats the stack trace into a readable string format.
-         * @param _stacktrace - The raw stack trace string.
-         * @param _maxEntries - Maximum stack entries to display.
-         * @returns A formatted string representation of the stack trace.
-         */
-        #getFormattedStackTrace(_stacktrace: string, _maxEntries?: number): string;
-
-        /**
          * Creates a proxy for the message property, allowing it to be accessed as a
          * function with parameters only when called, or as a default value otherwise.
-         * @return {} - Proxy function that acts as both callable and readable property
+         * @returns Proxy function that acts as both callable and readable property
          */
-        #_createMessageProxy(message: Function|string): Proxy<message>
+        #_createMessageProxy(message: Function|string): Proxy<Function>
     }
 
     export = MainError;

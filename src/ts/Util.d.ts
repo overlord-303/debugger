@@ -31,5 +31,7 @@ declare module 'debugger-logger/src/Util'
         }
     }
 
-    export = Util;
+    const U: Util;
+
+    export = U;
 }

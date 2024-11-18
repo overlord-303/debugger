@@ -1,3 +1,9 @@
+/**
+ * Parses the stack trace into an array of objects for structured handling.
+ * Each entry contains the function name, file, and line/column numbers.
+ * @param _stacktrace - The raw stack trace string.
+ * @returns An array of objects, each representing a stack frame with function, file, line, and column details.
+ */
 function getParsedStackTrace(_stacktrace)
 {
     return _stacktrace
@@ -20,6 +26,12 @@ function getParsedStackTrace(_stacktrace)
         });
 }
 
+/**
+ * Formats the stack trace into a readable string format.
+ * @param _stacktrace - The raw stack trace string.
+ * @param _maxEntries - Maximum stack entries to display.
+ * @returns A formatted string representation of the stack trace.
+ */
 function getFormattedStackTrace(_stacktrace, _maxEntries = 15)
 {
     return getParsedStackTrace(_stacktrace).slice(0, _maxEntries).map(entry =>
