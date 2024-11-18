@@ -19,6 +19,7 @@
     - [Intercepting HTTP Requests](#intercepting-http-requests)
     - [Restoring Original Modules](#restoring-original-modules)
 - [Errors](#errors)
+    - [Usage](#usage-1)
     - [Basics](#basics)
     - [Getting Data](#getting-data)
     - [Formatting](#formatting)
@@ -182,6 +183,14 @@ Each `MainError` instance contains:
 - **Message**: An error message providing more detail/context.
 - **Timestamp**: The date and time when the error occurred.
 - **Stack Trace**: A formatted and parsed string of stack trace details for pinpointing the error source.
+
+### Usage
+
+Utility function to check if an error is a MainError instance, returns a boolean value.
+
+````javascript
+Debugger.isMainError(error);
+````
 
 ### Getting Data
 

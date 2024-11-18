@@ -143,6 +143,11 @@ class Debugger
         Debugger.#HRI.restore(_moduleName);
     }
 
+    isMainError(_error)
+    {
+        return _error instanceof MainError;
+    }
+
     on(_event, _listener)
     {
         if (!this.#EVENTS[_event]) this.#EVENTS[_event] = [];
@@ -272,7 +277,7 @@ class Debugger
                 try
                 {
                     return new toJSON(item);
-                } catch (error) { return "[Circular Object]"; }
+                } catch (error) { return "[Circular]"; }
             }
             else if (typeof item === "function")
             {

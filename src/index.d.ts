@@ -129,6 +129,11 @@ declare module 'debugger-logger'
         restore(_moduleName: keyof typeof ModuleBackupType): void;
 
         /**
+         * Check if a passed error is an instance of {@link MainError}.
+         */
+        isMainError(_error: Error): boolean;
+
+        /**
          * Add a listener to a chosen event.
          */
         on<T extends typeof EventTypes | keyof typeof EventTypes>(event: T, listener: EventCallback<T>): void;

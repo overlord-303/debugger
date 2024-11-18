@@ -16,12 +16,13 @@ class ToJSON
         if (seen.has(item)) return "[Circular]";
         seen.add(item);
 
-        if (Array.isArray(item)) return item.map(element => prepareForLogging(element, prepareForLogging, seen));
-        if (Buffer.isBuffer(item)) return item.toString();
-        if (item instanceof Date) return item.toISOString();
-        if (item instanceof Map) return Array.from(item.entries()).map(([key, value]) => [key, prepareForLogging(value, prepareForLogging, seen)]);
-        if (item instanceof Set) return Array.from(item).map(value => prepareForLogging(value, prepareForLogging, seen));
-        if (ArrayBuffer.isView(item)) return Array.from(item);
+        if (Array.isArray(item))      return item.map(element => prepareForLogging(element, prepareForLogging, seen));
+        if (Buffer.isBuffer(item))    return item.toString();
+        if (item instanceof Date)     return item.toISOString();
+        if (item instanceof Map)      return Array.from(item.entries()).map(([key, value]) => [key, prepareForLogging(value, prepareForLogging, seen)]);
+        if (item instanceof Set)      return Array.from(item).map(value => prepareForLogging(value, prepareForLogging, seen));
+        if (ArrayBuffer.isView(item)) return Array.from(item).map(value => prepareForLogging(value, prepareForLogging, seen));
+
         Object.getOwnPropertySymbols(item).forEach(symbol => item[symbol] = symbol.toString());
 
         const processedObject = {};

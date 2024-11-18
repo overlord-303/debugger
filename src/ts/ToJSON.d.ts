@@ -1,5 +1,10 @@
 declare module 'debugger-logger/src/ToJSON'
 {
+    /**
+     * @param {any} item Item to prepare for logging.
+     * @param {LoggingFunction} fn Passing the function recursively to prevent issues with object context.
+     * @param {WeakSet<Object>} [seen] A WeakSet to check for circular references.
+     */
     type LoggingFunction = (item: any, fn: LoggingFunction, seen?: WeakSet<object>) => any;
 
     /**
@@ -11,6 +16,8 @@ declare module 'debugger-logger/src/ToJSON'
 
         /**
          * Returns the object as a json formatted string.
+         *
+         * @throws TypeError
          */
         toString(): string;
 
