@@ -6,6 +6,7 @@ declare module 'debugger-logger'
     import * as Module from "node:module";
     import * as Util from "debugger-logger/src/Util";
     import * as MainError from "debugger-logger/src/MainError";
+    import * as toJSON from "debugger-logger/src/ToJSON";
     import { HRI, ModuleBackupType } from "debugger-logger/src/HttpRequestInterceptor";
 
     enum EventTypes {
@@ -38,9 +39,6 @@ declare module 'debugger-logger'
     }
 
     type EventCallback<T extends keyof EventArgs> = (...args: EventArgs[T]) => void;
-
-    type LoggingFunction = (item: any, fn: LoggingFunction, seen?: WeakSet<object>) => any;
-
 
     /**
      * Debugger class *(currently)* used for logging in a Node.js environment.
@@ -171,12 +169,6 @@ declare module 'debugger-logger'
          * @emits {@link EventTypes.modulecall}
          */
         #overrideModuleLoaderFunctionality(): void;
-
-        /**
-         * Prepares an item for logging by handling special data types such as functions,
-         * BigInts, Dates, Symbols, Buffers, Maps, Sets, Typed Arrays, and circular references.
-         */
-        #_prepareForLogging: LoggingFunction
 
         /**
          * Formats all keys on an object into strings.
