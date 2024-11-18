@@ -1,5 +1,5 @@
 const errors = require('./misc/errors.js');
-const { getFormattedStackTrace } = require('./misc/stacktrace.js');
+const { getFormattedStackTrace, getParsedStackTrace } = require('./misc/stacktrace.js');
 
 /**
  * @inheritDoc
@@ -10,6 +10,7 @@ class MainError extends Error
     #message;
     #timestamp;
     #stacktrace;
+    #stacktraceArray;
 
     #data = {};
     #args = [];
@@ -27,6 +28,7 @@ class MainError extends Error
         this.#message = msg;
         this.#timestamp = timestamp;
         this.#stacktrace = stack;
+        this.#stacktraceArray = getParsedStackTrace(this.stack);
 
         this.#data = {
             name: name,
@@ -48,6 +50,11 @@ class MainError extends Error
     getData()
     {
         return this.#data;
+    }
+
+    getStacktraceArray()
+    {
+        return this.#stacktraceArray;
     }
 
     toJSON()

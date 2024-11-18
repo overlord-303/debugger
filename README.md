@@ -18,6 +18,10 @@
     - [Event Listeners](#event-listeners)
     - [Intercepting HTTP Requests](#intercepting-http-requests)
     - [Restoring Original Modules](#restoring-original-modules)
+- [Errors](#errors)
+    - [Basics](#basics)
+    - [Getting Data](#getting-data)
+    - [Formatting](#formatting)
 - [License](#license)
 
 ---
@@ -165,6 +169,69 @@ will return an object with the following structure:
 
 ---
 
+
+## Errors
+
+### Basics
+
+`MainError` is the primary error class used in **Debugger Logger** to encapsulate detailed error information.
+
+Each `MainError` instance contains:
+
+- **Name**: The name of the error.
+- **Message**: An error message providing more detail/context.
+- **Timestamp**: The date and time when the error occurred.
+- **Stack Trace**: A formatted and parsed string of stack trace details for pinpointing the error source.
+
+### Getting Data
+
+````javascript
+error.getData();
+````
+will return an object with the following structure:
+````javascript
+{
+    name: string,
+    message: string,
+    timestamp: Date,
+    stack: string,
+    code?: string, // Error-Code if created via static method `MainError.fromErrorCode` or provided via `error.addData()`.
+    
+    ...key?: any,  // Any key-value pairs added via `error.addData()`.
+}
+````
+<br>
+
+````javascript
+error.getStacktraceArray();
+````
+will return an array with the following structure:
+````javascript
+[
+  number: {
+      function?: string,
+      file?: string,
+      line?: number,
+      column?: number,
+    
+      raw?: string, // If parsing fails the `raw` key is provided instead of the ones listed above.
+  }
+]
+````
+
+### Formatting
+
+````javascript
+error.toJSON();   // Returns a JSON formatted string useful for logging.
+error.toString(); // Returns a formatted string useful for logging.
+````
+
+---
+
 ## License
 
 This project is licensed under the [**GNU AGPLv3**](https://www.gnu.org/licenses/agpl-3.0.en.html) License.
+
+---
+
+<sup>[Back to the top](#debugger-logger)</sup>

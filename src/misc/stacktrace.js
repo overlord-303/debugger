@@ -41,4 +41,4 @@ function getFormattedStackTrace(_stacktrace, _maxEntries = 15)
     }).join('\n');
 }
 
-module.exports = { getFormattedStackTrace };
+module.exports = { getFormattedStackTrace, getParsedStackTrace };

@@ -12,6 +12,17 @@ declare module 'debugger-logger/src/MainError'
         [key: string]: any;
     }
 
+    type StacktraceArray = (
+        {
+            function: string;
+            file: string;
+            line: number;
+            column: number;
+        } |
+        {
+            raw: string;
+        })[];
+
     /**
      * A custom error class for handling enriched error information with structured stack traces and additional data.
      */
@@ -36,6 +47,11 @@ declare module 'debugger-logger/src/MainError'
          * @returns An object containing error details.
          */
         getData(): Data;
+
+        /**
+         * Parses a stack trace string and returns a `StacktraceArray` with detailed stack information.
+         */
+        getStacktraceArray(): StacktraceArray;
 
         /**
          * Converts the error to a JSON string, useful for logging.
@@ -74,7 +90,7 @@ declare module 'debugger-logger/src/MainError'
          * function with parameters only when called, or as a default value otherwise.
          * @returns Proxy function that acts as both callable and readable property
          */
-        #_createMessageProxy(message: Function|string): Proxy<Function>
+        #_createMessageProxy(message: Function|string): Proxy<message>
     }
 
     export = MainError;

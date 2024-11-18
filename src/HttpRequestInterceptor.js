@@ -121,7 +121,7 @@ class HttpRequestInterceptor
     {
         const { options, callback } = Util.normalizeClientRequestArgs(..._args);
 
-        if (Object.keys(options).length === 0) throw MainError.fromErrorCode('DLE5002').addData(_args);
+        if (Object.keys(options).length === 0) throw MainError.fromErrorCode('DLE5002').addData({ args: _args, normalizedClientRequestArgs: { options: options, callback: callback } });
 
         options.proto = _proto;
 
