@@ -39,6 +39,9 @@ declare module 'debugger-logger'
 
     type EventCallback<T extends keyof EventArgs> = (...args: EventArgs[T]) => void;
 
+    type LoggingFunction = (item: any, fn: LoggingFunction, seen?: WeakSet<object>) => any;
+
+
     /**
      * Debugger class *(currently)* used for logging in a Node.js environment.
      * It provides methods to log module calls, messages, errors, and debug information to the console and log files.
@@ -168,6 +171,12 @@ declare module 'debugger-logger'
          * @emits {@link EventTypes.modulecall}
          */
         #overrideModuleLoaderFunctionality(): void;
+
+        /**
+         * Prepares an item for logging by handling special data types such as functions,
+         * BigInts, Dates, Symbols, Buffers, Maps, Sets, Typed Arrays, and circular references.
+         */
+        #_prepareForLogging: LoggingFunction
 
         /**
          * Formats all keys on an object into strings.

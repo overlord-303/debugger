@@ -49,7 +49,7 @@ class HttpRequestInterceptor
 
     #wrapHttpModule(_requestCallback)
     {
-        const addToOriginalModules = (key, obj) => Object.keys(this.#ORIGINAL_MODULES).includes(key) ? false : this.#ORIGINAL_MODULES[key] = obj;
+        const addToOriginalModules = (key, obj) => Object.keys(this.#ORIGINAL_MODULES).includes(key) ? true : this.#ORIGINAL_MODULES[key] = obj;
 
         const logCallback = (_request, _end = false) =>
         {
@@ -89,7 +89,12 @@ class HttpRequestInterceptor
                     request: overriddenRequest,
                     get: overriddenGet,
                 }) === true
-            ) throw MainError.fromErrorCode('DLE5003').addData({ module: moduleName });
+            )
+            {
+                const error = MainError.fromErrorCode('DLE5003').addData({ module: moduleName });
+                error.getData().message(moduleName);
+                throw error;
+            }
 
             module.request = function (input, options, callback) {
                 const req = _requestCallback(proto, overriddenRequest.bind(module), [

@@ -12,23 +12,25 @@ class MainError extends Error
     #stacktrace;
 
     #data = {};
+    #args = [];
 
     constructor(name, message)
     {
         super(message);
+        const msg = this.#_createMessageProxy(message);
         const timestamp = new Date();
         const stack = this.#getFormattedStackTrace(this.stack);
 
         this.#name = name;
-        this.#message = message;
+        this.#message = msg;
         this.#timestamp = timestamp;
         this.#stacktrace = stack;
 
         this.#data = {
-            name,
-            message,
-            timestamp,
-            stack
+            name: name,
+            message: msg,
+            timestamp: timestamp,
+            stack: stack
         };
     }
 
@@ -52,7 +54,7 @@ class MainError extends Error
     }
 
     toString() {
-        return `Error: ${this.#name}\nMessage: ${this.#message}\nTime: ${this.#timestamp}\nStack: ${this.#stacktrace}`;
+        return `Error: ${this.#name}\nMessage: ${this.#message()}\nTime: ${this.#timestamp}\nStack: ${this.#stacktrace}`;
     }
 
     static fromJSON(_json, _throw = false)
@@ -87,12 +89,6 @@ class MainError extends Error
         return getFormattedStackTrace;
     }
 
-    /**
-     * Parses the stack trace into an array of objects for structured handling.
-     * Each entry contains the function name, file, and line/column numbers.
-     * @param {string} _stacktrace
-     * @return {Array<Object>}
-     */
     #getParsedStackTrace(_stacktrace)
     {
         return _stacktrace
@@ -128,6 +124,26 @@ class MainError extends Error
             if (entry.raw) return `at ${entry.raw}`;
             else return `at ${entry.function} (${entry.file}:${entry.line}:${entry.column})`;
         }).join('\n');
+    }
+
+    /**
+     * Creates a proxy for the message property, allowing it to be accessed as a
+     * function with parameters only when called, or as a default value otherwise.
+     *
+     * @param {Function|string} message - The message function or string from ErrorCodes
+     * @return {Function} - Proxy function that acts as both callable and readable property
+     */
+    #_createMessageProxy(message)
+    {
+        const messageFn = typeof message === 'function' ? message : () => message;
+
+        return new Proxy(messageFn, {
+            apply: (_, __, args) => {
+                this.#args = args;
+                return messageFn(...args)
+            },
+            get: (_, prop) => (prop === 'toString') ? () => messageFn(...this.#args) : messageFn(...this.#args),
+        });
     }
 }
 

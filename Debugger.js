@@ -254,19 +254,63 @@ class Debugger
         };
     }
 
+    #_prepareForLogging(item, fn, seen = new WeakSet())
+    {
+        const prepareForLogging = fn;
+
+        if (item === null || typeof item !== "object") return item;
+
+        if (seen.has(item)) return "[Circular]";
+        seen.add(item);
+
+        if (Array.isArray(item)) return item.map(element => prepareForLogging(element, seen));
+        if (Buffer.isBuffer(item)) return item.toString();
+        if (item instanceof Date) return item.toISOString();
+        if (item instanceof Map) return Array.from(item.entries()).map(([key, value]) => [key, prepareForLogging(value, seen)]);
+        if (item instanceof Set) return Array.from(item).map(value => prepareForLogging(value, seen));
+        if (ArrayBuffer.isView(item)) return Array.from(item);
+        Object.getOwnPropertySymbols(item).forEach(symbol => item[symbol] = symbol.toString());
+
+        const processedObject = {};
+
+        for (const key of Object.keys(item))
+        {
+            const value = item[key];
+
+            if (typeof value === "function")
+            {
+                processedObject[key] = value.toString();
+            }
+            else if (typeof value === "bigint")
+            {
+                processedObject[key] = value.toString();
+            }
+            else
+            {
+                processedObject[key] = prepareForLogging(value, seen);
+            }
+        }
+
+        return processedObject;
+    }
+
     #format(..._data)
     {
         return _data.map((item) =>
         {
             if (item instanceof Error)
             {
-                return `${item.name}, Message: '${item.message}', Stack:\n${this.#UTIL.stacktrace(item.stack)}`;
+                if (item instanceof MainError)
+                {
+                    return `${item.name},\n${JSON.stringify(this.#_prepareForLogging(item.getData(), this.#_prepareForLogging), null, 2)}`;
+                }
+                return `${item.name}, Message: "${item.message}", Stack:\n${this.#UTIL.stacktrace(item.stack)}`;
             }
             else if (typeof item === "object" && item !== null)
             {
                 try
                 {
-                    return JSON.stringify(item, null, 2);
+                    return JSON.stringify(this.#_prepareForLogging(item, this.#_prepareForLogging), null, 2);
                 } catch (error) { return "[Circular Object]"; }
             }
             else if (typeof item === "function")
