@@ -37,7 +37,7 @@ npm install
 ```
 or install via npm:
 ```bash
-npm install debugger-logger@latest
+npm install debugger-logger@stable
 ```
 
 ---
