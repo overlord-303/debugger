@@ -90,7 +90,7 @@ declare module 'debugger-logger/src/MainError'
          * function with parameters only when called, or as a default value otherwise.
          * @returns Proxy function that acts as both callable and readable property
          */
-        #_createMessageProxy(message: Function|string): Proxy<message>
+        #_createMessageProxy(_message: Function|string): Proxy<Function>
     }
 
     export = MainError;

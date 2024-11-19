@@ -25,9 +25,9 @@ declare module 'debugger-logger/src/Util'
      */
     class Util
     {
-        normalizeClientRequestArgs(input: string|URL, options: Object, cb: function): ClientRequestObject
+        normalizeClientRequestArgs(_input: string|URL, _options: Object, _callback: function): ClientRequestObject
         {
-            function urlToOptions(url: URL): UrlOptions;
+            function urlToOptions(_url: URL): UrlOptions;
         }
     }
 

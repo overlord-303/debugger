@@ -270,13 +270,13 @@ class Debugger
                 {
                     return `${item.name},\n${new toJSON(item.getData())}`;
                 }
-                return `${item.name}, Message: "${item.message}", Stack:\n${this.#UTIL.stacktrace(item.stack)}`;
+                return `${new toJSON(item)}`;
             }
             else if (typeof item === "object" && item !== null)
             {
                 try
                 {
-                    return new toJSON(item);
+                    return `${new toJSON(item)}`;
                 } catch (error) { return "[Circular]"; }
             }
             else if (typeof item === "function")

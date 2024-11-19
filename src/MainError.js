@@ -1,3 +1,4 @@
+const toJSON = require('./ToJSON.js');
 const errors = require('./misc/errors.js');
 const { getFormattedStackTrace, getParsedStackTrace } = require('./misc/stacktrace.js');
 
@@ -22,19 +23,18 @@ class MainError extends Error
 
         const msg = this.#_createMessageProxy(message);
         const timestamp = new Date();
-        const stack = getFormattedStackTrace(this.stack);
 
         this.#name = name;
         this.#message = msg;
         this.#timestamp = timestamp;
-        this.#stacktrace = stack;
+        this.#stacktrace = getFormattedStackTrace(this.stack);
         this.#stacktraceArray = getParsedStackTrace(this.stack);
 
         this.#data = {
             name: name,
             message: msg,
             timestamp: timestamp,
-            stack: stack
+            stack: getFormattedStackTrace(this.stack, 15, 0, ', '),
         };
     }
 
@@ -59,7 +59,7 @@ class MainError extends Error
 
     toJSON()
     {
-        return JSON.stringify(this.#data, null, 2);
+        return `${new toJSON(this.#data)}`;
     }
 
     toString() {
@@ -98,9 +98,9 @@ class MainError extends Error
         return getFormattedStackTrace;
     }
 
-    #_createMessageProxy(message)
+    #_createMessageProxy(_message)
     {
-        const messageFn = typeof message === 'function' ? message : () => message;
+        const messageFn = typeof _message === 'function' ? _message : () => _message;
 
         return new Proxy(messageFn, {
             apply: (_, __, args) => {

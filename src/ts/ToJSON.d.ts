@@ -5,7 +5,7 @@ declare module 'debugger-logger/src/ToJSON'
      * @param {LoggingFunction} fn Passing the function recursively to prevent issues with object context.
      * @param {WeakSet<Object>} [seen] A WeakSet to check for circular references.
      */
-    type LoggingFunction = (item: any, fn: LoggingFunction, seen?: WeakSet<object>) => any;
+    type LoggingFunction = (_item: any, _fn: LoggingFunction, _seen?: WeakSet<object>) => any;
 
     /**
      * Class for turning (complex) objects into {@link JSON.stringify json formattable} objects.

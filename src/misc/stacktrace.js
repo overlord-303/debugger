@@ -28,17 +28,21 @@ function getParsedStackTrace(_stacktrace)
 
 /**
  * Formats the stack trace into a readable string format.
- * @param _stacktrace - The raw stack trace string.
- * @param _maxEntries - Maximum stack entries to display.
+ * @param {string} _stacktrace - The raw stack trace string.
+ * @param {number} _maxEntries - Maximum stack entries to display.
+ * @param {number} _indent - Indentation amount (in spaces)
+ * @param {string} _delimiter - Delimiter joining the strings
  * @returns A formatted string representation of the stack trace.
  */
-function getFormattedStackTrace(_stacktrace, _maxEntries = 15)
+function getFormattedStackTrace(_stacktrace, _maxEntries = 15, _indent = 3, _delimiter = '\n')
 {
     return getParsedStackTrace(_stacktrace).slice(0, _maxEntries).map(entry =>
     {
-        if (entry.raw) return `   at ${entry.raw}`;
-        else return `   at ${entry.function} (${entry.file}:${entry.line}:${entry.column})`;
-    }).join('\n');
+        const indent = ' '.repeat(Math.max(0, _indent || 0));
+
+        if (entry.raw) return `${indent}at ${entry.raw}`;
+        else return `${indent}at ${entry.function} (${entry.file}:${entry.line}:${entry.column})`;
+    }).join(_delimiter);
 }
 
 module.exports = { getFormattedStackTrace, getParsedStackTrace };
