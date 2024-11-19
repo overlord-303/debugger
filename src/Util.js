@@ -51,6 +51,12 @@ class Util
 
         return { options: _options, callback: _callback }
     }
+
+    isClass(_object)
+    {
+        const propertyNames = Object.getOwnPropertyNames(_object);
+        return !(!propertyNames.includes('prototype') || propertyNames.includes('arguments'));
+    }
 }
 
 module.exports = new Util();

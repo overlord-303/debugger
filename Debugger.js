@@ -143,9 +143,10 @@ class Debugger
         Debugger.#HRI.restore(_moduleName);
     }
 
-    isMainError(_error)
+    isMainError(..._errors)
     {
-        return _error instanceof MainError;
+        if (_errors.length === 1) return _errors[0] instanceof MainError;
+        else return _errors.map(error => error instanceof MainError);
     }
 
     on(_event, _listener)

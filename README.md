@@ -98,7 +98,7 @@ Debugger.logError('Error message');
 Add or remove event listeners to track specific events:
 ```javascript
 function log(filePath, content) {
-  console.log(`Logged to file: ${filePath}, with message: ${content}.`);
+   console.log(`Logged to file: ${filePath}, with message: ${content}.`);
 }
 
 Debugger.on('filelog', log);
@@ -186,10 +186,11 @@ Each `MainError` instance contains:
 
 ### Usage
 
-Utility function to check if an error is a MainError instance, returns a boolean value.
+Utility function to check if an error is a MainError instance, return value changes based on arguments passed to the function.
 
 ````javascript
-Debugger.isMainError(error);
+Debugger.isMainError(error);              // Returns a boolean.
+Debugger.isMainError(errorOne, errorTwo); // Returns an array of booleans.
 ````
 
 ### Getting Data
@@ -204,7 +205,7 @@ will return an object with the following structure:
     message: string,
     timestamp: Date,
     stack: string,
-    code?: string, // Error-Code if created via static method `MainError.fromErrorCode` or provided via `error.addData()`.
+    code?: string, // Error-Code if created via static method `MainError.fromErrorCode()` or provided via `error.addData()`.
     
     ...key?: any,  // Any key-value pairs added via `error.addData()`.
 }

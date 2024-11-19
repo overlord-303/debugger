@@ -12,16 +12,17 @@ declare module 'debugger-logger/src/MainError'
         [key: string]: any;
     }
 
-    type StacktraceArray = (
-        {
-            function: string;
-            file: string;
-            line: number;
-            column: number;
-        } |
-        {
-            raw: string;
-        })[];
+    interface parsedStackObject {
+        function: string;
+        file: string;
+        line: number;
+        column: number;
+    }
+
+    interface unparsedStackObject {
+        raw: string;
+    }
+
 
     /**
      * A custom error class for handling enriched error information with structured stack traces and additional data.
@@ -33,7 +34,7 @@ declare module 'debugger-logger/src/MainError'
          * @param name - The name of the error.
          * @param message - The message of the error.
          */
-        constructor(name: string, message: string);
+        constructor(name: string, message: Function|string);
 
         /**
          * Adds data to the error object.
@@ -51,7 +52,7 @@ declare module 'debugger-logger/src/MainError'
         /**
          * Parses a stack trace string and returns a `StacktraceArray` with detailed stack information.
          */
-        getStacktraceArray(): StacktraceArray;
+        getStacktraceArray(): (parsedStackObject|unparsedStackObject)[];
 
         /**
          * Converts the error to a JSON string, useful for logging.

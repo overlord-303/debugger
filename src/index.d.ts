@@ -132,6 +132,7 @@ declare module 'debugger-logger'
          * Check if a passed error is an instance of {@link MainError}.
          */
         isMainError(_error: Error): boolean;
+        isMainError(..._errors: Error[]): boolean[];
 
         /**
          * Add a listener to a chosen event.

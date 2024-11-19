@@ -29,6 +29,8 @@ declare module 'debugger-logger/src/Util'
         {
             function urlToOptions(_url: URL): UrlOptions;
         }
+
+        isClass(_object: Object): boolean;
     }
 
     const U: Util;
