@@ -57,6 +57,15 @@ class Util
         const propertyNames = Object.getOwnPropertyNames(_object);
         return !(!propertyNames.includes('prototype') || propertyNames.includes('arguments'));
     }
+
+    appendWithTrailingNewlines(_str, _toAppend)
+    {
+        const trailingNewlinesMatch = _str.match(/(\n+)$/);
+        const trailingNewlines = trailingNewlinesMatch ? trailingNewlinesMatch[0] : '';
+        const newlineCount = trailingNewlines.length;
+
+        return ((trailingNewlines ? _str.slice(0, -newlineCount) : _str).trim() + ' ' + _toAppend) + trailingNewlines;
+    }
 }
 
 module.exports = new Util();

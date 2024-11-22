@@ -31,6 +31,8 @@ declare module 'debugger-logger/src/Util'
         }
 
         isClass(_object: Object): boolean;
+
+        appendWithTrailingNewlines(_str: string, _toAppend: string): string;
     }
 
     const U: Util;

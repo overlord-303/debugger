@@ -1,4 +1,5 @@
 const MainError = require('./src/MainError.js');
+const Util = require('./src/Util.js');
 const toJSON = require('./src/ToJSON.js');
 
 const Module = require('module');
@@ -20,6 +21,7 @@ class Debugger
     #throwError = (Debugger.#instance || !this.#stack.includes('Debugger.getSingletonInstance') || !(this.#stack.includes('Debugger.getSingletonInstance') && this.#stack.includes('new Debugger')));
 
     #startTime = performance.now();
+    #lastLogTime = 0;
     #isEventTriggeredLog = false;
     #debug = false;
 
@@ -61,6 +63,14 @@ class Debugger
             const duration = (endTime - this.#startTime) / 1000; // Convert milliseconds to seconds
             return duration.toFixed(3); // Round to 3 decimal places
         },
+        getLogDifference: () =>
+        {
+            const now = performance.now();
+            !this.#lastLogTime ? this.#lastLogTime = now : void 0;
+            const difference =  now - this.#lastLogTime;
+            this.#lastLogTime = now;
+            return difference.toFixed(0);
+        },
         getClass: () => this.constructor.name,
         isNode: () => typeof global !== 'undefined' && global.process != null && global.process.versions != null && global.process.versions.node != null,
         hasKey: (data) => data.length > 0 ? this.#ORIGINAL_LOGS.hasOwnProperty(data[0]) : false,
@@ -100,7 +110,7 @@ class Debugger
         if (!Debugger.#instance)
         {
             Debugger.#instance = new Debugger();
-            Debugger.#instance.log(Debugger.#instance.#UTIL.getClass() + '::instance_created > Logger started.');
+            Debugger.#instance.log(Debugger.#instance.#UTIL.getClass() + "::instance_created > 'Logger started'.");
 
             Debugger.#HRI = require('debugger-logger/src/HttpRequestInterceptor');
         }
@@ -190,19 +200,19 @@ class Debugger
 
             this.log(`${className}::script_exit > ${this.#UTIL.getExecutionTime()}s.`);
 
-            typeof code === 'number'
-                ? this.log(`${className}::script_exit > Script execution finished with code: ${code}.\n`)
-                : this.log(`${className}::script_exit > Script execution finished.\n`);
+            (typeof code === 'number' || typeof code === 'string')
+                ? this.log(`${className}::script_exit > 'Script execution finished with code: ${code}'.\n`)
+                : this.log(`${className}::script_exit > 'Script execution finished'.\n`);
         };
 
-        global.process.on('exit', callback);
+        process.on('exit', callback);
     }
 
     #setGlobalErrorHandler()
     {
         const callback = (error) => this.logError('error', error);
 
-        global.process.on('uncaughtException', callback);
+        process.on('uncaughtException', callback);
     }
 
     #overrideConsoleFunctionality()
@@ -381,10 +391,12 @@ class Debugger
 
     #log(_type, _data, _calledByConsoleFunctions)
     {
+        const difference = `+${this.#UTIL.getLogDifference()}ms`;
+
+        _calledByConsoleFunctions ? _data = `'${_data}' ${difference}` : _data = Util.appendWithTrailingNewlines(_data, difference);
+
         if (this.#isEventTriggeredLog && _calledByConsoleFunctions && this.#isOriginalFunction(_calledByConsoleFunctions))
             return this.#writeConsole(_calledByConsoleFunctions, _data, false);
-
-        _calledByConsoleFunctions ? _data = `'${_data}'` : _data;
 
         const dateTime = this.#UTIL.getDateTime();
         const data = `[${dateTime}] ${_type}: ${_data}`;

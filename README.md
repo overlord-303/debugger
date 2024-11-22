@@ -86,6 +86,11 @@ The `Debugger` is a singleton and is automatically instantiated as one.
 
 ### Basic Logging
 
+Logs are provided in the follow format:
+````text
+[0000-00-00 00:00:00] level: 'content' +0ms
+````
+
 Use various log methods to track application events:
 ```javascript
 Debugger.log('Info message');
